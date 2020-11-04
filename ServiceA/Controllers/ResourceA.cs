@@ -31,12 +31,42 @@ namespace ServiceA.Controllers
             return msg;
         }
 
-        //// GET api/<ResourceA>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET api/<ResourceA>/5
+        [HttpGet("{id}")]
+        public async Task<string> GetAsync(int id)
+        {
+            var client = new HttpClient();
+
+            //Start with a list of URLs
+            var urls = new string[]
+                {
+        "https://localhost:44314/api/ResourceB",
+        "https://localhost:44382/api/ResourceC"
+                };
+
+            //Start requests for all of them
+            var requests = urls.Select
+                (
+                    url => client.GetAsync(url)
+                ).ToList();
+
+            //Wait for all the requests to finish
+            _ = await Task.WhenAll(requests);
+
+            //Get the responses
+            var responses = requests.Select
+                (
+                    task => task.Result
+                );
+
+            var res = new List<string>();
+            foreach (var r in responses)
+            {
+                // Extract the message body
+                res.Add(  await r.Content.ReadAsStringAsync());
+            }
+            return res.Aggregate((a, b) => a + b);
+        }
 
         //// POST api/<ResourceA>
         //[HttpPost]

@@ -18,7 +18,7 @@ namespace ServiceC
 {
     public class Startup
     {
-        public static ActivitySource Source = new ActivitySource("RestAPI");
+        public static ActivitySource Source = new ActivitySource("ServiceC");
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,7 +37,7 @@ namespace ServiceC
                             var resource = OpenTelemetry.Resources.Resources.CreateServiceResource(serviceName);
                             builder
                                  .SetResource(resource)
-                                 .AddSource(serviceName)
+                                 .AddSource(Source.Name)
                                  .SetSampler(new AlwaysOnSampler())
                                  .AddHttpClientInstrumentation()
                                  .AddAspNetCoreInstrumentation(config => {

@@ -17,9 +17,15 @@ namespace ServiceC.Controllers
         [HttpGet]
         public string Get()
         {
+            using (var activity = Startup.Source.StartActivity("HeavyActivity"))
+            {
+                // uncomment this to see exceptions 
+                //throw new InvalidOperationException();
+                activity?.SetTag("http.method", "GET");
+                System.Threading.Thread.Sleep(100);
+                return "response C";
+            }
 
-            System.Threading.Thread.Sleep(100);
-            return "response C";
         }
 
         //// GET api/<ResourceA>/5
