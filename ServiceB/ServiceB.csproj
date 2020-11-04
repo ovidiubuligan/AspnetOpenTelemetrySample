@@ -2,7 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry" Version="0.7.0-beta.45" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="0.7.0-beta.45" />
+    <!-- to enable   services.AddOpenTelemetryTracing() inside startup -->
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="0.7.0-beta.45" />
+
+    <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="0.7.0-beta.45" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="0.7.0-beta.45" />
+  </ItemGroup>
 
 </Project>
