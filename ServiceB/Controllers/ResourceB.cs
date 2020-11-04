@@ -19,6 +19,7 @@ namespace ServiceB.Controllers
         {
             var client = new HttpClient();
 
+            System.Threading.Thread.Sleep(100);
             var stringTask = client.GetStringAsync("https://localhost:44382/api/ResourceC");
             var msg = stringTask.Result;
 

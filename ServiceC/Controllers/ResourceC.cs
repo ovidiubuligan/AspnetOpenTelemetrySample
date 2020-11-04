@@ -17,6 +17,8 @@ namespace ServiceC.Controllers
         [HttpGet]
         public string Get()
         {
+
+            System.Threading.Thread.Sleep(100);
             return "response C";
         }
 
