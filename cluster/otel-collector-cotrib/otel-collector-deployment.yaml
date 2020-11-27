@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  template:
+    metadata:
+      name: otel-collector
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: otel-collector-container
+        image:  otel/opentelemetry-collector-contrib
+        volumeMounts:
+          - name: colector-config-vol
+            mountPath: /etc/otel/config.yaml
+            subPath: config.yaml
+      volumes:
+      - name:  colector-config-vol
+        configMap:
+          name:  colector-config 
+  selector:
+    matchLabels:
+      app: otel-collector
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector-service
+  #annotations:
+  #  service.beta.kubernetes.io/azure-load-balancer-resource-group: vbc-kube-dev
+spec:
+  ports:
+    - name: zipkin-collector
+      port: 9411
+      protocol: TCP
+      targetPort: 9411
+    - name: jaeger-grpc
+      port: 14250
+      protocol: TCP
+      targetPort: 14250
+    - name: jaeger-thrift-http
+      port: 14268
+      protocol: TCP
+      targetPort: 14268
+    - name: jaeger-thrift-compact
+      port: 6831
+      protocol: UDP
+      targetPort: 6831
+    - name: jaeger-thrift-binary
+      port: 6832
+      protocol: UDP
+      targetPort: 6832
+    - name: otlp
+      port: 55680
+      protocol: TCP
+      targetPort: 55680
+  selector:
+    app: otel-collector

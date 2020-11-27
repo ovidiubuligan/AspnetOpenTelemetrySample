@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ovi-ingres-ingress-nginx-controller
+  #namespace: nginx-ingress
+data:
+  enable-opentracing: "true"
+  #zipkin-collector-host: otel-collector-service.default.svc.cluster.local
+  jaeger-collector-host: otel-collector-service.default.svc.cluster.local
+  # opentracing: "true"
+  # opentracing-tracer: "/usr/local/lib/libjaegertracing_plugin.so"
+  # opentracing-tracer-config: |
+  #   {
+  #     "service_name": "nginx-ingress",
+  #     "sampler": {
+  #       "type": "const",
+  #       "param": 1
+  #     },
+  #     "reporter": {
+  #       "localAgentHostPort": "otel-collector-service.default.svc.cluster.local:6831"
+  #     }
+  #   }

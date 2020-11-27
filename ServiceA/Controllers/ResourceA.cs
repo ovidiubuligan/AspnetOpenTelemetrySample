@@ -19,10 +19,7 @@ namespace ServiceA.Controllers
         public string Get()
         {
             var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(
-            //    new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            //client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
             System.Threading.Thread.Sleep(100);
             var stringTask = client.GetStringAsync("https://localhost:44314/api/ResourceB");
 

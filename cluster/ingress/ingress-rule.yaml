@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-app-svc
+            port:
+              number: 80
+            paths:
+      # todo se what to do with this 
+      - path: /jaeger-ui
+        pathType: Prefix
+        backend:
+          service:
+            name: jaeger-all-in-one-service
+            port: 
+              number: 16686
+  # expose jaeger UI
+  # this path requires something a line in hosts file like : 192.168.0.108 jaeger.localhost               
+  - host: jaeger.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jaeger-all-in-one-service
+            port: 
+              number: 16686

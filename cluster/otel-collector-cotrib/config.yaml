@@ -1,0 +1,59 @@
+# ############################
+# Receivers
+# ############################
+receivers:
+  # Data sources: traces, metrics, logs
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+  # Data sources: traces
+  jaeger:
+    protocols:
+      grpc:
+      thrift_binary:
+      thrift_compact:
+      thrift_http:
+  # Data sources: traces
+  zipkin:
+# ########################################################
+# Processors
+# ########################################################
+processors:
+  batch:
+
+# #########################
+# Exporters
+# #########################
+
+exporters:
+  # Data sources: traces, metrics, logs
+  azuremonitor:
+    instrumentation_key: aaaaaaaaaaaaaaaaaaa
+  # Data sources: traces, metrics, logs
+  file:
+    path: ./filename.json
+
+  # Data sources: traces
+  jaeger:
+    endpoint: "jaeger-all-in-one-service:14250"
+    insecure: true
+
+# ####################################
+# Service
+# ####################################
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin,otlp,jaeger]
+      #processors: [batch]
+      exporters: [file,azuremonitor,jaeger]
+    # metrics:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [otlp,azuremonitor]
+    #logs:
+    #  receivers: [otlp]
+    #  processors: [batch]
+    #  exporters: [otlp]

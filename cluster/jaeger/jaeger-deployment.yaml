@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-all-in-one
+  labels:
+    app: jaeger-all-in-one
+spec:
+  template:
+    metadata:
+      name: jaeger-all-in-one
+      labels:
+        app: jaeger-all-in-one
+    spec:
+      containers:
+      - name: jaeger-all-in-one-container
+        image:  jaegertracing/all-in-one
+        env:
+        - name: COLLECTOR_ZIPKIN_HTTP_PORT
+          value: "9411"
+  selector:
+    matchLabels:
+      app: jaeger-all-in-one
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-all-in-one-service
+spec:
+  ports:
+    - name: zipkin-thrift-deprecated
+      port: 5775
+      protocol: UDP
+      targetPort: 5775
+    - name: jaeger-thrift-compact
+      port: 6831
+      protocol: UDP
+      targetPort: 6831
+    - name: jaeger-thrift-binary
+      port: 6832
+      protocol: UDP
+      targetPort: 6832
+    - name: jaeger-serve-configs
+      port: 5778
+      protocol: TCP
+      targetPort: 5778
+    - name: jaeger-ui
+      port: 16686
+      protocol: TCP
+      targetPort: 16686
+    - name: jaeger-thrift-direct-client-http  #accept jaeger.thrift directly from clients
+      port: 14268
+      protocol: TCP
+      targetPort: 14268
+    - name: jaeger-accept-model-proto  #accept `model.proto`
+      port: 14250
+      protocol: TCP
+      targetPort: 14250
+  selector:
+    app: jaeger-all-in-one

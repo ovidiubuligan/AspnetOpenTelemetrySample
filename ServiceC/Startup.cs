@@ -47,8 +47,8 @@ namespace ServiceC
                                          {
                                              if (httpResponse.StatusCode >= 500)
                                              {
-                                                             // in order to show as an error in jaeger it needs error=true tag
-                                                             activity.SetTag("error", true);
+                                                  // in order to show as an error in jaeger it needs error=true tag
+                                                  activity.SetTag("error", true);
                                              }
                                          }
                                      };

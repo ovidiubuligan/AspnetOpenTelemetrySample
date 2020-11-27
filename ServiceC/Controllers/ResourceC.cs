@@ -20,7 +20,7 @@ namespace ServiceC.Controllers
             using (var activity = Startup.Source.StartActivity("HeavyActivity"))
             {
                 // uncomment this to see exceptions 
-                //throw new InvalidOperationException();
+                throw new InvalidOperationException();
                 activity?.SetTag("http.method", "GET");
                 System.Threading.Thread.Sleep(100);
                 return "response C";
