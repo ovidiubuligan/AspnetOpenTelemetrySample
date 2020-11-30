@@ -18,6 +18,28 @@ export KUBECONFIG=$(k3d kubeconfig write ovi-cluster)
 # Inside cluster
 # #######################################
 
+Prometheus operator 
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+
+kubectl create namespace monitoring
+helm install prom --namespace=monitoring prometheus-community/kube-prometheus-stack
+
+# get password for grafana
+kubectl get secret --namespace monitoring prom-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+edit etc/hosts file with :
+```
+# ###### local k3d kubernetes
+192.168.0.108 jaeger.localhost  
+192.168.0.108 alertmanager.localhost  
+192.168.0.108 prometheus.localhost  
+192.168.0.108 grafana.localhost  
+
+``` 
+
 # install nginix
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -95,27 +117,6 @@ spec:
     app: nginx-app
   sessionAffinity: None
   type: ClusterIP
----
-#
-#
-# create ingress rule 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: nginx
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nginx-svc
-            port:
-              number: 80
 EOF
 ```
 

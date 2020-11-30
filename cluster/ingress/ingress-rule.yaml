@@ -39,3 +39,38 @@ spec:
             name: jaeger-all-in-one-service
             port: 
               number: 16686
+
+######################################
+### Prometheus stack 
+######################################
+  - host: alertmanager.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local
+            port: 
+              number: 9093
+  - host: grafana.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-grafana.monitoring.svc.cluster.local
+            port: 
+              number: 80
+  - host: prometheus.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
+            port: 
+              number: 9090
+
